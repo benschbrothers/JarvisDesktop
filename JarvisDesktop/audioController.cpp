@@ -1,13 +1,27 @@
 
 #include "audioController.h"
 
+IMMDeviceEnumerator *enumerator;
 
-//###################### SET DEFAULT DEVICE ######################
-char setDefaultDevice(IMMDeviceEnumerator* enumerator, EDataFlow dataFlowFilter, DWORD stateMaskFilter, LPWSTR setDevice)
+void initAudioController() 
 {
 	HRESULT hr;
+	hr = CoInitializeEx(NULL, COINIT_MULTITHREADED);
+	if (hr) { printHResult("CoInitializeEx failed", hr);  }
 
+	hr = CoCreateInstance(__uuidof(MMDeviceEnumerator), NULL, CLSCTX_ALL, __uuidof(IMMDeviceEnumerator), (void**)&enumerator);
+
+	if (hr) { printHResult("CoCreateInstance failed", hr);  }
+}
+
+//###################### SET DEFAULT DEVICE ######################
+char setDefaultAudioEndpoint(LPWSTR setDevice)
+{
+	HRESULT hr;
 	IMMDeviceCollection* devices;
+
+	EDataFlow dataFlowFilter = eRender;
+	DWORD stateMaskFilter = DEVICE_STATE_ACTIVE;
 
 	hr = enumerator->EnumAudioEndpoints(dataFlowFilter, stateMaskFilter, &devices);
 	if (hr) { printHResult("EnumAudioEndpoints failed", hr); return 1; }
@@ -52,11 +66,14 @@ char setDefaultDevice(IMMDeviceEnumerator* enumerator, EDataFlow dataFlowFilter,
 }
 
 //###################### GET DEFAULT DEVICE ######################
-LPWSTR tryGetDefaultAudioEndpoint(IMMDeviceEnumerator* enumerator, EDataFlow dataFlow, ERole role)
+LPWSTR getDefaultAudioEndpoint()
 {
 	HRESULT hr;
 	LPWSTR id;
 	IMMDevice* device;
+
+	EDataFlow dataFlow = eRender;
+	ERole role = eConsole;
 
 	hr = enumerator->GetDefaultAudioEndpoint(dataFlow, role, &device);
 	if (hr) { printHResult("GetDefaultAudioEndpoint failed", hr); }
@@ -86,7 +103,7 @@ LPWSTR tryGetDefaultAudioEndpoint(IMMDeviceEnumerator* enumerator, EDataFlow dat
 }
 
 //###################### GET DEVICE COUNT ######################
-int getAudioEndpointCount(IMMDeviceEnumerator* enumerator) 
+int getAudioEndpointCount()
 {
 	HRESULT hr;
 	IMMDeviceCollection* devices;
@@ -109,7 +126,7 @@ int getAudioEndpointCount(IMMDeviceEnumerator* enumerator)
 }
 
 //###################### GET ID OF DEVICE ######################
-LPWSTR getAudioEndpointID(IMMDeviceEnumerator* enumerator, int num) 
+LPWSTR getAudioEndpointID(int num)
 {
 	HRESULT hr;
 	IMMDeviceCollection* devices;
@@ -135,7 +152,7 @@ LPWSTR getAudioEndpointID(IMMDeviceEnumerator* enumerator, int num)
 }
 
 //###################### GET NAME OF DEVICE ######################
-string getAudioEndpointName(IMMDeviceEnumerator* enumerator, int num) 
+string getAudioEndpointName(int num)
 {
 	HRESULT hr;
 	IMMDevice* device;

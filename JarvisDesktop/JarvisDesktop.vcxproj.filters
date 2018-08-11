@@ -24,6 +24,9 @@
     <ClCompile Include="audioController.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="restController.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="E:\HomeServer\Code\AudioChanger\AudioChanger\IPolicyConfig.h">
@@ -36,6 +39,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="audioController.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="restController.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

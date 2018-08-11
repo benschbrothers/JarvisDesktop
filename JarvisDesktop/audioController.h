@@ -1,6 +1,5 @@
 #pragma once
 
-#include <winsock2.h>
 #include <windows.h>
 #include <stdio.h>
 #include <Mmdeviceapi.h>
@@ -18,12 +17,14 @@ using namespace std;
 
 #pragma comment(lib, "ws2_32.lib")
 
-char setDefaultDevice(IMMDeviceEnumerator* enumerator, EDataFlow dataFlowFilter, DWORD stateMaskFilter, LPWSTR setDevice);
+void initAudioController();
 
-int getAudioEndpointCount(IMMDeviceEnumerator* enumerator);
+char setDefaultAudioEndpoint(LPWSTR setDevice);
 
-LPWSTR getAudioEndpointID(IMMDeviceEnumerator* enumerator, int num);
+int getAudioEndpointCount();
 
-LPWSTR tryGetDefaultAudioEndpoint(IMMDeviceEnumerator* enumerator, EDataFlow dataFlow, ERole role);
+LPWSTR getAudioEndpointID(int num);
 
-string getAudioEndpointName(IMMDeviceEnumerator* enumerator, int num);
+LPWSTR getDefaultAudioEndpoint();
+
+string getAudioEndpointName(int num);
