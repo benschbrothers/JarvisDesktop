@@ -30,7 +30,7 @@ char setDefaultAudioEndpoint(LPWSTR setDevice)
 	hr = devices->GetCount(&deviceCount);
 	if (hr) { printHResult("IMMDeviceCollection->GetCount failed", hr); return 1; }
 
-	printf("Found %d devices\n", deviceCount);
+	//printf("Found %d devices\n", deviceCount);
 
 	//iterate all devices
 	for (UINT i = 0; i < deviceCount; i++) {
@@ -38,7 +38,7 @@ char setDefaultAudioEndpoint(LPWSTR setDevice)
 		hr = devices->Item(i, &device);
 		if (hr) { printHResult("IMMDeviceCollection->Item failed", hr); return 1; }
 
-		printf("  Device %d:\n", i + 1);
+		//printf("  Device %d:\n", i + 1);
 
 		LPWSTR devID;
 		hr = device->GetId(&devID);
@@ -78,7 +78,7 @@ LPWSTR getDefaultAudioEndpoint()
 	hr = enumerator->GetDefaultAudioEndpoint(dataFlow, role, &device);
 	if (hr) { printHResult("GetDefaultAudioEndpoint failed", hr); }
 
-	printf("  DefaultDevice: ");
+	//printf("  DefaultDevice: ");
 
 	hr = device->GetId(&id);
 	if (hr) { printHResult("GetDefaultAudioEndpoint failed", hr); }
@@ -95,7 +95,10 @@ LPWSTR getDefaultAudioEndpoint()
 	hr = pProps->GetValue(PKEY_Device_FriendlyName, &varName);
 	if (hr) { printHResult("GetDefaultAudioEndpoint failed", hr); }
 
-	printf(" %S \n", varName.pwszVal);
+	//printf(" %S \n", varName.pwszVal);
+	string conOut = "Default: ";
+	conOut += CW2A((LPCWSTR)varName.pwszVal);
+	console(2, 10, conOut);
 
 	device->Release();
 
@@ -116,7 +119,7 @@ int getAudioEndpointCount()
 	hr = devices->GetCount(&deviceCount);
 	if (hr) { printHResult("IMMDeviceCollection->GetCount failed", hr); }
 
-	printf("Found %d devices\n", deviceCount);
+	//printf("Found %d devices\n", deviceCount);
 
 	int result = deviceCount;
 

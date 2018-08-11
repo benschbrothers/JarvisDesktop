@@ -20,14 +20,14 @@ string HTTPReq(const char* verb, const char* hostname, int port, const char* res
 	SockAddr.sin_family = AF_INET;
 	SockAddr.sin_addr.s_addr = *((unsigned long*)host->h_addr);
 
-	cout << "Connecting...\n";
+	//cout << "Connecting...\n";
 
 	if (connect(Socket, (SOCKADDR*)(&SockAddr), sizeof(SockAddr)) != 0)
 	{
 		cout << "Could not connect";
 		exit(1);
 	}
-	cout << "Connected.\n";
+	//cout << "Connected.\n";
 
 	// Build request
 	string req = verb; // GET | POST
@@ -61,12 +61,9 @@ string HTTPReq(const char* verb, const char* hostname, int port, const char* res
 		req.append("Connection: close\r\n\r\n");
 	}
 
-	cout << "=============================== request"
-		<< endl
-		<< req
-		<< endl
-		<< "=============================== "
-		<< endl;
+	//cout << "=============================== request" << endl
+	//	<< req<< endl
+	//	<< "=============================== "<< endl;
 
 	send(Socket, req.c_str(), req.size(), 0);
 

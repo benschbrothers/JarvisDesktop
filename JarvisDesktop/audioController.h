@@ -9,6 +9,7 @@
 
 #include "platform.h"
 #include "IPolicyConfig.h"
+#include "console.h"
 
 #include <iostream>
 #include <sstream>

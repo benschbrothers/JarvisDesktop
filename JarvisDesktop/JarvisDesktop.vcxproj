@@ -116,12 +116,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="audioController.cpp" />
+    <ClCompile Include="console.cpp" />
     <ClCompile Include="E:\HomeServer\Code\AudioChanger\AudioChanger\platform.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="restController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="audioController.h" />
+    <ClInclude Include="console.h" />
     <ClInclude Include="E:\HomeServer\Code\AudioChanger\AudioChanger\IPolicyConfig.h" />
     <ClInclude Include="E:\HomeServer\Code\AudioChanger\AudioChanger\platform.h" />
     <ClInclude Include="E:\HomeServer\Code\AudioChanger\AudioChanger\waveout.h" />
