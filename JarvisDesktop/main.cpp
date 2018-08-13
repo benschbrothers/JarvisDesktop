@@ -25,18 +25,19 @@ int main(int args, char* argv[])
 	int currentDevice;
 	string audioNames[15];
 	LPWSTR audioIDs[15];
+	int audioApiKey[15];
 
 	int conInt = 0;
 
 	initAudioController();
 
-	console(0, 9, "--------------------------------------\n");
+	console(0, 9, "---------------------------------------------------------\n");
 	console(1, 10, "Get default audio Endpoint\n");
-	console(3, 9, "--------------------------------------\n");
+	console(3, 9, "---------------------------------------------------------\n");
 
 	startDevice = getDefaultAudioEndpoint();
 
-	console(4,9,"--------------------------------------\n");
+	console(4,9,"---------------------------------------------------------\n");
 	console(5,10,"Enum audio Endpoints \n");
 
 	numDevices = getAudioEndpointCount();
@@ -46,35 +47,52 @@ int main(int args, char* argv[])
 	conInt = 7;
 
 	for (int i = 0; i < numDevices; i++) {
-		audioIDs[i] = getAudioEndpointID( i);
-		audioNames[i] = getAudioEndpointName( i);
+		audioIDs[i] = getAudioEndpointID(i);
+		audioNames[i] = getAudioEndpointName(i);
 		//cout << "AudioName: " << audioNames[i] << endl;
 		string conOut = to_string(i) + " Device: " + audioNames[i];
 		console(conInt, 10, conOut);
+		conInt++;
+		console(conInt, 10, "ApiKey of the Audio Device?   ");
+		cin >> audioApiKey[i];
+		console(conInt, 10, "ApiKey of Device: " + to_string(audioApiKey[i]) + "                    ");
 		conInt++;
 
 		if (wcscmp(audioIDs[i], startDevice) == 0)
 			currentDevice = i;
 	}
-	console(conInt, 9, "--------------------------------------\n");
+	console(conInt, 9, "---------------------------------------------------------\n");
 	conInt++;
 
-	console(conInt, 10, "current Device: " + audioNames[currentDevice] + " number " + to_string(currentDevice+1) + " of " + to_string(numDevices));
+	console(conInt, 9, "---------------------------------------------------------\n");
+	conInt++;
+	console(conInt, 10, "Found Software:\n");
+	conInt++;
 
 	while (true) {
+		console(conInt, 10, "current Device: " + audioNames[currentDevice] + " number " + to_string(currentDevice + 1) + " of " + to_string(numDevices));
+
 		string response;
+		int responseApiKey = 0;
+
 		response = HTTPReq("GET", "taskmanager.zapto.org", 80, "/", NULL);
+
 		console(conInt + 1, 10, "HTTP GET Information");
 		char endch = response.back();
 		int input = endch - '0';
-		input--;
-		console(conInt + 2, 10,  "Set Device: "+ audioNames[input]);
+		
+		for (int i = 0; i <= 15; i++) {
+			if (audioApiKey[i] == input)
+				responseApiKey = i;
+
+		}
+		console(conInt + 2, 10,  "Set Device: "+ audioNames[responseApiKey]);
 		console(conInt + 3, 10,	 "Current Device: " + audioNames[currentDevice]);
 
-		if (input != currentDevice) {
+		if (responseApiKey != currentDevice) {
 			console(conInt + 4, 12, "NOT SAME CHANGING");
-			setDefaultAudioEndpoint(audioIDs[input]);
-			currentDevice = input;
+			setDefaultAudioEndpoint(audioIDs[responseApiKey]);
+			currentDevice = responseApiKey;
 			clearConsole(conInt + 1);
 			clearConsole(conInt + 2);
 			clearConsole(conInt + 3);
